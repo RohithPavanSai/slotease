@@ -9,7 +9,13 @@ export default function SalonDashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  const statusOptions = ["Booked", "Confirmed", "In Progress", "Completed", "Cancelled"];
+  const statusOptions = [
+    "Booked",
+    "Confirmed",
+    "In Progress",
+    "Completed",
+    "Cancelled",
+  ];
 
   // Fetch salon bookings from backend
   useEffect(() => {
@@ -21,9 +27,12 @@ export default function SalonDashboard() {
           return;
         }
 
-        const res = await fetch(`http://localhost:8080/api/appointments?salonId=${id}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const res = await fetch(
+          `https://slotease-production-15e5.up.railway.app/api/appointments?salonId=${id}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          },
+        );
 
         if (!res.ok) throw new Error("Failed to fetch bookings");
 
@@ -44,20 +53,25 @@ export default function SalonDashboard() {
   const updateStatus = async (bookingId, newStatus) => {
     try {
       const token = localStorage.getItem("authToken");
-      const res = await fetch(`http://localhost:8080/api/appointments/${bookingId}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+      const res = await fetch(
+        `https://slotease-production-15e5.up.railway.app/api/appointments/${bookingId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ status: newStatus }),
         },
-        body: JSON.stringify({ status: newStatus }),
-      });
+      );
 
       if (!res.ok) throw new Error("Failed to update status");
 
       // Update local state
       setBookings((prev) =>
-        prev.map((b) => (b._id === bookingId ? { ...b, status: newStatus } : b))
+        prev.map((b) =>
+          b._id === bookingId ? { ...b, status: newStatus } : b,
+        ),
       );
     } catch (err) {
       console.error(err);
@@ -90,7 +104,9 @@ export default function SalonDashboard() {
       <div className="bg-white rounded-2xl shadow-md p-6 mb-8">
         <div className="flex items-center gap-2 mb-4">
           <CalendarDays className="text-purple-600" size={22} />
-          <h2 className="text-xl font-semibold text-gray-800">Today’s Appointments</h2>
+          <h2 className="text-xl font-semibold text-gray-800">
+            Today’s Appointments
+          </h2>
         </div>
 
         {error && <p className="text-red-500">{error}</p>}
@@ -117,10 +133,14 @@ export default function SalonDashboard() {
                   <td className="py-2">{b.service || "N/A"}</td>
                   <td className="py-2">{b.stylistId?.fullName || "N/A"}</td>
                   <td className="py-2">
-                    {b.startTime ? new Date(b.startTime).toLocaleTimeString() : "N/A"}
+                    {b.startTime
+                      ? new Date(b.startTime).toLocaleTimeString()
+                      : "N/A"}
                   </td>
                   <td className="py-2">
-                    {b.endTime ? new Date(b.endTime).toLocaleTimeString() : "N/A"}
+                    {b.endTime
+                      ? new Date(b.endTime).toLocaleTimeString()
+                      : "N/A"}
                   </td>
                   <td className="py-2">{b.status || "N/A"}</td>
                   <td className="py-2">
@@ -130,7 +150,9 @@ export default function SalonDashboard() {
                       className="border rounded-lg px-2 py-1"
                     >
                       {statusOptions.map((s) => (
-                        <option key={s} value={s}>{s}</option>
+                        <option key={s} value={s}>
+                          {s}
+                        </option>
                       ))}
                     </select>
                   </td>

@@ -6,7 +6,7 @@ export default function SalonStaffPage() {
   const { id } = useParams(); // salonId
   const [stylists, setStylists] = useState([]);
   const [loading, setLoading] = useState(true);
-  const backendURL = "http://localhost:8080";
+  const backendURL = "https://slotease-production-15e5.up.railway.app";
 
   const [newStylist, setNewStylist] = useState({
     name: "",
@@ -98,7 +98,9 @@ export default function SalonStaffPage() {
       )}
 
       {/* Add Staff Form */}
-      <h2 className="text-2xl mb-4 font-semibold text-purple-600">Add New Staff</h2>
+      <h2 className="text-2xl mb-4 font-semibold text-purple-600">
+        Add New Staff
+      </h2>
 
       <div className="flex flex-wrap gap-2 mb-6 items-center bg-gray-50 p-4 rounded-lg shadow-sm">
         <input

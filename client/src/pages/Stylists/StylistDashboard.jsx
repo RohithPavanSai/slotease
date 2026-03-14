@@ -9,7 +9,13 @@ export default function StylistDashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  const statusOptions = ["Booked", "Confirmed", "In Progress", "Completed", "Cancelled"];
+  const statusOptions = [
+    "Booked",
+    "Confirmed",
+    "In Progress",
+    "Completed",
+    "Cancelled",
+  ];
 
   useEffect(() => {
     const fetchAppointments = async () => {
@@ -20,9 +26,12 @@ export default function StylistDashboard() {
           return;
         }
 
-        const res = await fetch(`http://localhost:8080/api/appointments?stylistId=${id}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const res = await fetch(
+          `https://slotease-production-15e5.up.railway.app/api/appointments?stylistId=${id}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          },
+        );
 
         if (!res.ok) throw new Error("Failed to fetch appointments");
 
@@ -42,19 +51,24 @@ export default function StylistDashboard() {
   const updateStatus = async (appointmentId, newStatus) => {
     try {
       const token = localStorage.getItem("authToken");
-      const res = await fetch(`http://localhost:8080/api/appointments/${appointmentId}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+      const res = await fetch(
+        `https://slotease-production-15e5.up.railway.app/api/appointments/${appointmentId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ status: newStatus }),
         },
-        body: JSON.stringify({ status: newStatus }),
-      });
+      );
 
       if (!res.ok) throw new Error("Failed to update status");
 
       setAppointments((prev) =>
-        prev.map((a) => (a._id === appointmentId ? { ...a, status: newStatus } : a))
+        prev.map((a) =>
+          a._id === appointmentId ? { ...a, status: newStatus } : a,
+        ),
       );
     } catch (err) {
       console.error(err);
@@ -86,7 +100,9 @@ export default function StylistDashboard() {
       <div className="bg-white rounded-2xl shadow-md p-6 mb-8">
         <div className="flex items-center gap-2 mb-4">
           <CalendarDays className="text-purple-600" size={22} />
-          <h2 className="text-xl font-semibold text-gray-800">Today’s Appointments</h2>
+          <h2 className="text-xl font-semibold text-gray-800">
+            Today’s Appointments
+          </h2>
         </div>
 
         {error && <p className="text-red-500">{error}</p>}
@@ -110,8 +126,18 @@ export default function StylistDashboard() {
                   <td className="py-2">{a.customer?.name}</td>
                   <td className="py-2">{a.customer?.mobile}</td>
                   <td className="py-2">{a.service}</td>
-                  <td className="py-2">{new Date(a.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</td>
-                  <td className="py-2">{new Date(a.endTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</td>
+                  <td className="py-2">
+                    {new Date(a.startTime).toLocaleTimeString([], {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </td>
+                  <td className="py-2">
+                    {new Date(a.endTime).toLocaleTimeString([], {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </td>
                   <td className="py-2">{a.status}</td>
                   <td className="py-2">
                     <select
@@ -120,7 +146,9 @@ export default function StylistDashboard() {
                       className="border rounded-lg px-2 py-1"
                     >
                       {statusOptions.map((s) => (
-                        <option key={s} value={s}>{s}</option>
+                        <option key={s} value={s}>
+                          {s}
+                        </option>
                       ))}
                     </select>
                   </td>

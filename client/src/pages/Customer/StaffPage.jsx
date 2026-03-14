@@ -8,7 +8,7 @@ export default function StaffPage() {
   const [stylists, setStylists] = useState([]);
   const [salon, setSalon] = useState(null);
   const [loading, setLoading] = useState(true);
-  const backendURL = "http://localhost:8080";
+  const backendURL = "https://slotease-production-15e5.up.railway.app";
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -26,13 +26,16 @@ export default function StaffPage() {
         const filtered = res.data.filter(
           (stylist) =>
             stylist.specialization &&
-            stylist.specialization.trim().toLowerCase() === serviceName.trim().toLowerCase()
+            stylist.specialization.trim().toLowerCase() ===
+              serviceName.trim().toLowerCase(),
         );
 
         // 3️⃣ For each stylist, attach the correct serviceId matching this serviceName
         const stylistsWithServiceId = filtered.map((stylist) => {
           const matchedService = stylist.services?.find(
-            (s) => s.serviceName.trim().toLowerCase() === serviceName.trim().toLowerCase()
+            (s) =>
+              s.serviceName.trim().toLowerCase() ===
+              serviceName.trim().toLowerCase(),
           );
           return {
             ...stylist,
@@ -69,18 +72,19 @@ export default function StaffPage() {
 
       {stylists.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-{stylists.map((stylist) => (
-  <StylistCard
-    key={stylist._id}
-    stylist={stylist}
-    specialization={serviceName} // pass the requested serviceName
-    salonId={salonId}            // pass salonId for navigation
-  />
-))}
-
+          {stylists.map((stylist) => (
+            <StylistCard
+              key={stylist._id}
+              stylist={stylist}
+              specialization={serviceName} // pass the requested serviceName
+              salonId={salonId} // pass salonId for navigation
+            />
+          ))}
         </div>
       ) : (
-        <p className="text-gray-600">No specialists available for {serviceName}.</p>
+        <p className="text-gray-600">
+          No specialists available for {serviceName}.
+        </p>
       )}
     </div>
   );

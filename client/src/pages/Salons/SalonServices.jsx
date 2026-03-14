@@ -17,7 +17,7 @@ export default function SalonServices() {
     image: null,
   });
 
-  const backendURL = "http://localhost:8080";
+  const backendURL = "https://slotease-production-15e5.up.railway.app";
 
   // Fetch services
   const fetchServices = async () => {
@@ -50,7 +50,11 @@ export default function SalonServices() {
   const handleAddService = async () => {
     setAddError(null);
     if (!salonId) return setAddError("Salon ID is missing.");
-    if (!newService.serviceName.trim() || !newService.price || !newService.duration) {
+    if (
+      !newService.serviceName.trim() ||
+      !newService.price ||
+      !newService.duration
+    ) {
       return setAddError("Service Name, Price, and Duration are required.");
     }
 
@@ -93,13 +97,19 @@ export default function SalonServices() {
 
   return (
     <div className="p-6 h-screen overflow-y-auto">
-      <h1 className="text-3xl font-bold mb-6 text-purple-700">Salon Services</h1>
+      <h1 className="text-3xl font-bold mb-6 text-purple-700">
+        Salon Services
+      </h1>
 
       {/* Existing Services */}
       {services.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-8">
           {services.map((service) => (
-            <ServiceCard key={service._id} service={service} salonId={salonId} />
+            <ServiceCard
+              key={service._id}
+              service={service}
+              salonId={salonId}
+            />
           ))}
         </div>
       ) : (

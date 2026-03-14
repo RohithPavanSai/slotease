@@ -1,8 +1,10 @@
 import { Star, Briefcase } from "lucide-react";
 
 export default function StylistCard({ stylist }) {
-  const backendURL = "http://localhost:8080"; // ✅ backend URL
-  const imageSrc = stylist.image ? `${backendURL}${stylist.image}` : "/default-avatar.png";
+  const backendURL = "https://slotease-production-15e5.up.railway.app"; // ✅ backend URL
+  const imageSrc = stylist.image
+    ? `${backendURL}${stylist.image}`
+    : "/default-avatar.png";
 
   const rating = stylist.rating || 0;
 
@@ -31,10 +33,16 @@ export default function StylistCard({ stylist }) {
           <Star
             key={i}
             size={18}
-            className={i < Math.round(rating) ? "text-yellow-400 fill-yellow-400" : "text-gray-300"}
+            className={
+              i < Math.round(rating)
+                ? "text-yellow-400 fill-yellow-400"
+                : "text-gray-300"
+            }
           />
         ))}
-        <span className="ml-2 text-sm text-gray-600">{rating.toFixed(1)} / 5</span>
+        <span className="ml-2 text-sm text-gray-600">
+          {rating.toFixed(1)} / 5
+        </span>
       </div>
     </div>
   );

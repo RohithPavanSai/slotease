@@ -3,27 +3,42 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 
 const allSlots = [
-  "06:00-07:00","07:00-08:00","08:00-09:00","09:00-10:00","10:00-11:00",
-  "11:00-12:00","12:00-13:00","13:00-14:00","14:00-15:00","15:00-16:00",
-  "16:00-17:00","17:00-18:00","18:00-19:00","19:00-20:00","20:00-21:00","21:00-22:00"
+  "06:00-07:00",
+  "07:00-08:00",
+  "08:00-09:00",
+  "09:00-10:00",
+  "10:00-11:00",
+  "11:00-12:00",
+  "12:00-13:00",
+  "13:00-14:00",
+  "14:00-15:00",
+  "15:00-16:00",
+  "16:00-17:00",
+  "17:00-18:00",
+  "18:00-19:00",
+  "19:00-20:00",
+  "20:00-21:00",
+  "21:00-22:00",
 ];
 
 export default function UpdateTimeslots() {
   const { id: stylistId } = useParams();
   const [services, setServices] = useState([]);
   const [selectedService, setSelectedService] = useState(null);
-  const [selectedDate, setSelectedDate] = useState(new Date().toISOString().slice(0, 10));
+  const [selectedDate, setSelectedDate] = useState(
+    new Date().toISOString().slice(0, 10),
+  );
   const [selectedSlots, setSelectedSlots] = useState([]);
   const [existingSlots, setExistingSlots] = useState([]);
   const [error, setError] = useState("");
-  const backendURL = "http://localhost:8080";
+  const backendURL = "https://slotease-production-15e5.up.railway.app";
 
   // Fetch stylist's services
   useEffect(() => {
     const fetchServices = async () => {
       try {
         const res = await axios.get(`${backendURL}/api/services`, {
-          params: { stylistId }
+          params: { stylistId },
         });
         setServices(res.data);
         if (res.data.length > 0) setSelectedService(res.data[0]);
@@ -42,14 +57,14 @@ export default function UpdateTimeslots() {
     const fetchSlots = async () => {
       try {
         const res = await axios.get(`${backendURL}/api/slots`, {
-          params: { 
-            stylistId, 
+          params: {
+            stylistId,
             specialization: selectedService.serviceName,
-            date: selectedDate 
+            date: selectedDate,
           },
         });
 
-        const times = res.data.map(s => s.time);
+        const times = res.data.map((s) => s.time);
         setExistingSlots(times);
         setSelectedSlots(times); // preselect existing slots
       } catch (err) {
@@ -63,7 +78,7 @@ export default function UpdateTimeslots() {
 
   const toggleSlot = (slot) => {
     if (selectedSlots.includes(slot)) {
-      setSelectedSlots(selectedSlots.filter(s => s !== slot));
+      setSelectedSlots(selectedSlots.filter((s) => s !== slot));
     } else {
       if (selectedSlots.length >= 8) {
         alert("Maximum 8 slots allowed");
@@ -98,22 +113,26 @@ export default function UpdateTimeslots() {
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold text-purple-700 mb-4">Update Timeslots</h1>
+      <h1 className="text-2xl font-bold text-purple-700 mb-4">
+        Update Timeslots
+      </h1>
 
       <div className="mb-4">
         <label className="mr-2 font-medium">Select Service:</label>
         <select
           value={selectedService?._id || ""}
-          onChange={e => {
-            const svc = services.find(s => s._id === e.target.value);
+          onChange={(e) => {
+            const svc = services.find((s) => s._id === e.target.value);
             setSelectedService(svc);
             setSelectedSlots([]);
             setExistingSlots([]);
           }}
           className="border px-2 py-1 rounded"
         >
-          {services.map(s => (
-            <option key={s._id} value={s._id}>{s.serviceName}</option>
+          {services.map((s) => (
+            <option key={s._id} value={s._id}>
+              {s.serviceName}
+            </option>
           ))}
         </select>
       </div>
@@ -123,7 +142,7 @@ export default function UpdateTimeslots() {
         <input
           type="date"
           value={selectedDate}
-          onChange={e => setSelectedDate(e.target.value)}
+          onChange={(e) => setSelectedDate(e.target.value)}
           className="border px-2 py-1 rounded"
         />
       </div>
@@ -131,7 +150,7 @@ export default function UpdateTimeslots() {
       {error && <p className="text-red-500 mb-2">{error}</p>}
 
       <div className="grid grid-cols-4 gap-2 mb-4">
-        {allSlots.map(slot => {
+        {allSlots.map((slot) => {
           const isSelected = selectedSlots.includes(slot);
           const isExisting = existingSlots.includes(slot);
 
@@ -143,8 +162,8 @@ export default function UpdateTimeslots() {
                 isSelected
                   ? "bg-purple-600 text-white"
                   : isExisting
-                  ? "bg-gray-300 text-gray-700"
-                  : "bg-white text-gray-800"
+                    ? "bg-gray-300 text-gray-700"
+                    : "bg-white text-gray-800"
               }`}
             >
               {slot}

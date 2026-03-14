@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 
 export default function MyProfile() {
   const { id } = useParams();
-  const backendURL = "http://localhost:8080";
+  const backendURL = "https://slotease-production-15e5.up.railway.app";
 
   const [user, setUser] = useState(null);
   const [editMode, setEditMode] = useState(false);
@@ -66,8 +66,8 @@ export default function MyProfile() {
     try {
       const res = await fetch(
         `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
-          name
-        )}`
+          name,
+        )}`,
       );
       const data = await res.json();
       if (data && data.length > 0) {
@@ -90,7 +90,8 @@ export default function MyProfile() {
     const form = new FormData();
     form.append("fullName", formData.fullName);
     form.append("location", JSON.stringify(formData.location));
-    if (formData.profilePhoto) form.append("profilePhoto", formData.profilePhoto);
+    if (formData.profilePhoto)
+      form.append("profilePhoto", formData.profilePhoto);
 
     try {
       const res = await axios.put(`${backendURL}/api/profile/${id}`, form, {
@@ -110,7 +111,9 @@ export default function MyProfile() {
       return;
     }
     try {
-      await axios.put(`${backendURL}/api/profile/${id}/password`, { password: newPassword });
+      await axios.put(`${backendURL}/api/profile/${id}/password`, {
+        password: newPassword,
+      });
       alert("Password updated successfully!");
       setNewPassword("");
       setChangePasswordMode(false);
@@ -123,7 +126,6 @@ export default function MyProfile() {
   if (!user) return <p>Loading...</p>;
 
   // Determine default profile image
-
 
   return (
     <div className="max-w-lg mx-auto mt-10 p-6 bg-white shadow-md rounded-2xl relative">
@@ -173,7 +175,9 @@ export default function MyProfile() {
               src={
                 formData.profilePhoto
                   ? URL.createObjectURL(formData.profilePhoto)
-                  : user.role=="salonOwner"?"/salonlogo.png":"/userlogo.png"
+                  : user.role == "salonOwner"
+                    ? "/salonlogo.png"
+                    : "/userlogo.png"
               }
               alt="Profile"
               onClick={handlePhotoClick}
@@ -193,7 +197,9 @@ export default function MyProfile() {
               <>
                 <h2 className="text-xl font-bold">{user.fullName}</h2>
                 <p className="text-gray-600">{user.email}</p>
-                <p className="text-sm text-gray-500 mt-1 capitalize">{user.role}</p>
+                <p className="text-sm text-gray-500 mt-1 capitalize">
+                  {user.role}
+                </p>
               </>
             )}
 

@@ -16,11 +16,14 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:8080/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
+      const res = await fetch(
+        "https://slotease-production-15e5.up.railway.app/api/auth/login",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password }),
+        },
+      );
 
       const data = await res.json();
 
@@ -59,11 +62,15 @@ export default function LoginPage() {
           <p className="text-gray-500">Welcome back! Please login.</p>
         </div>
 
-        {error && <div className="mb-4 text-red-500 text-sm text-center">{error}</div>}
+        {error && (
+          <div className="mb-4 text-red-500 text-sm text-center">{error}</div>
+        )}
 
         <form onSubmit={handleLogin} className="space-y-5">
           <div>
-            <label className="block text-sm font-medium text-gray-600">Email Address</label>
+            <label className="block text-sm font-medium text-gray-600">
+              Email Address
+            </label>
             <input
               type="email"
               required
@@ -75,7 +82,9 @@ export default function LoginPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-600">Password</label>
+            <label className="block text-sm font-medium text-gray-600">
+              Password
+            </label>
             <input
               type="password"
               required
@@ -100,7 +109,10 @@ export default function LoginPage() {
 
         <p className="text-center mt-6 text-gray-600 text-sm">
           Don’t have an account?{" "}
-          <a href="/register" className="text-purple-600 font-semibold hover:underline">
+          <a
+            href="/register"
+            className="text-purple-600 font-semibold hover:underline"
+          >
             Sign Up
           </a>
         </p>

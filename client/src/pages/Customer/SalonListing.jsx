@@ -3,7 +3,7 @@ import axios from "axios";
 import SalonCard from "../../components/Customer/SalonCard";
 
 export default function SalonListing() {
-  const backendURL = "http://localhost:8080";
+  const backendURL = "https://slotease-production-15e5.up.railway.app";
   const [salons, setSalons] = useState([]);
   const [loading, setLoading] = useState(true);
 

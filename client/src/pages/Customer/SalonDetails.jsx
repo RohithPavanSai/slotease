@@ -9,7 +9,7 @@ export default function SalonDetails() {
   const [salon, setSalon] = useState(null);
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
-  const backendURL = "http://localhost:8080";
+  const backendURL = "https://slotease-production-15e5.up.railway.app";
 
   useEffect(() => {
     const fetchSalonDetails = async () => {
@@ -42,7 +42,11 @@ export default function SalonDetails() {
   return (
     <div className="p-6 h-screen overflow-x-hidden">
       <img
-        src={salon.profilePhoto ? `${backendURL}${salon.profilePhoto}` : "/salonlogo.png"}
+        src={
+          salon.profilePhoto
+            ? `${backendURL}${salon.profilePhoto}`
+            : "/salonlogo.png"
+        }
         alt={salon.name}
         className="w-full h-60 object-cover rounded-2xl shadow-lg mb-6"
       />
@@ -50,7 +54,8 @@ export default function SalonDetails() {
       <div className="mb-6">
         <h1 className="text-3xl font-bold text-purple-700">{salon.name}</h1>
         <p className="flex items-center text-gray-500 mt-1">
-          <MapPin size={18} className="mr-2 text-purple-500" /> {salon.location || ""}
+          <MapPin size={18} className="mr-2 text-purple-500" />{" "}
+          {salon.location || ""}
         </p>
         <div className="flex items-center mt-2">
           {[...Array(5)].map((_, i) => (
@@ -71,20 +76,28 @@ export default function SalonDetails() {
       </div>
 
       <div className="mb-8">
-        <h2 className="text-2xl font-semibold text-gray-800 mb-4">Services & Pricing</h2>
+        <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+          Services & Pricing
+        </h2>
         {services.length === 0 ? (
           <p className="text-gray-500">No services found for this salon.</p>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {services.map((service) => (
-              <ServiceCard key={service._id} service={service} salonId={salon._id} />
+              <ServiceCard
+                key={service._id}
+                service={service}
+                salonId={salon._id}
+              />
             ))}
           </div>
         )}
       </div>
 
       <div>
-        <h2 className="text-2xl font-semibold text-gray-800 mb-4">Customer Reviews</h2>
+        <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+          Customer Reviews
+        </h2>
         <div className="space-y-4">
           {salon.rating && salon.rating.length > 0 ? (
             salon.rating.map((review, idx) => (
