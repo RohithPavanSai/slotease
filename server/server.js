@@ -16,7 +16,6 @@ import slotRoutes from "./routes/serviceSlotRoutes.js";
 import profileRouter from "./routes/profileRouter.js";
 import paymentRouter from "./routes/paymentRouter.js";
 
-
 const upload = multer();
 // Paths: Calculate __dirname
 const __filename = fileURLToPath(import.meta.url);
@@ -39,7 +38,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // CORS
-app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+app.use(
+  cors({
+    origin: "https://beneficial-simplicity-production.up.railway.app",
+    credentials: true,
+  }),
+);
 
 // ✅ Ensure uploads folders exist
 const folders = ["uploads", "uploads/stylists", "uploads/services"];
@@ -47,7 +51,6 @@ folders.forEach((folder) => {
   const fullPath = path.join(__dirname, folder);
   if (!fs.existsSync(fullPath)) fs.mkdirSync(fullPath, { recursive: true });
 });
-
 
 // ✅ Serve uploaded images
 
@@ -67,10 +70,8 @@ app.use("/api/salons", salonRouter);
 app.use("/api/slots", slotRoutes);
 app.use("/api/payments", paymentRouter);
 
-
 // Health check
 app.get("/", (req, res) => res.send("💈 Salon API Running Successfully!"));
-
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
