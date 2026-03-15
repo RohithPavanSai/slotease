@@ -21,8 +21,8 @@ import StylistSlotPage from "./pages/Customer/StylistSlotPage.jsx";
 import MyBookings from "./pages/MyBookings";
 import BookSlot from "./pages/BookSlot";
 import HairstyleTryOn from "./pages/HairstyleTryOn.jsx";
-// Import your ReviewsPage here!
-// import ReviewsPage from "./pages/Customer/ReviewsPage";
+// Un-commented the Reviews import! Make sure this path matches your actual file.
+import ReviewsPage from "./pages/Customer/ReviewsPage";
 
 // Salon Pages
 import SalonLayout from "./pages/Salons/SalonLayout";
@@ -62,8 +62,8 @@ const App = () => {
           <Route path="bookings" element={<MyBookings />} />
           <Route path="bookslot" element={<BookSlot />} />
           <Route path="hairstyletryon" element={<HairstyleTryOn />} />
-          {/* Add this line once you have the component ready */}
-          {/* <Route path="reviews" element={<ReviewsPage />} /> */}
+          {/* Un-commented the Reviews route! */}
+          <Route path="reviews" element={<ReviewsPage />} />
         </Route>
 
         {/* SALON OWNER ROUTES */}
