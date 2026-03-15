@@ -1,48 +1,54 @@
 import React from "react";
-import Navbar from "./components/Navbar";
+import { Route, Routes, Navigate } from "react-router-dom";
 import Menu from "./components/Menu";
-import { Route, Routes } from "react-router-dom";
-import Home from "./pages/Home";
-import BookSlot from "./pages/BookSlot";
-import MyBookings from "./pages/MyBookings";
-import Salons from "./pages/Salons";
+
+// Common Pages
+import MainDashboardPage from "./pages/MainDashboardPage";
 import LoginPage from "./pages/LoginPage.jsx";
 import SignupPage from "./pages/SignUpPage.jsx";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
+import Salons from "./pages/Salons";
+import HairstyleApp from "./pages/HairstyleApp.jsx";
+import MyProfile from "./pages/MyProfile.jsx";
+
+// Customer Pages
 import CustomerLayout from "./pages/Customer/CustomerLayout";
 import HomePage from "./pages/Customer/HomePage";
 import SalonListing from "./pages/Customer/SalonListing";
 import SalonDetails from "./pages/Customer/SalonDetails";
 import StaffPage from "./pages/Customer/StaffPage";
+import StylistSlotPage from "./pages/Customer/StylistSlotPage.jsx";
+import MyBookings from "./pages/MyBookings";
+import BookSlot from "./pages/BookSlot";
+import HairstyleTryOn from "./pages/HairstyleTryOn.jsx";
+// Import your ReviewsPage here!
+// import ReviewsPage from "./pages/Customer/ReviewsPage";
+
+// Salon Pages
 import SalonLayout from "./pages/Salons/SalonLayout";
 import SalonDashboard from "./pages/Salons/SalonDashboard";
 import ManageServices from "./pages/Salons/SalonServices";
-import MainDashboardPage from "./pages/MainDashboardPage";
 import SalonStaffPage from "./pages/Salons/SalonStaffPage.jsx";
-import HairstyleTryOn from "./pages/HairstyleTryOn.jsx";
-import HairstyleApp from "./pages/HairstyleApp.jsx";
-import MyProfile from "./pages/MyProfile.jsx";
+
+// Stylist Pages
 import StylistLayout from "./pages/Stylists/StylistLayout.jsx";
 import StylistDashboard from "./pages/Stylists/StylistDashboard.jsx";
 import UpdateTimeslots from "./pages/Stylists/UpdateTimeslots.jsx";
-import StylistSlotPage from "./pages/Customer/StylistSlotPage.jsx";
 
 const App = () => {
   return (
     <div>
-      {/* <Navbar/> */}
       <Menu />
       <Routes>
+        {/* Public Routes */}
         <Route path="/" element={<MainDashboardPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<SignupPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-
-        {/* General pages that don't need a specific User ID */}
         <Route path="/salons" element={<Salons />} />
         <Route path="/hairstyle" element={<HairstyleApp />} />
 
-        {/* CUSTOMER ROUTES - All URLs start with /customer/:id/ */}
+        {/* CUSTOMER ROUTES */}
         <Route path="/customer/:id" element={<CustomerLayout />}>
           <Route index element={<HomePage />} />
           <Route path="salons" element={<SalonListing />} />
@@ -53,11 +59,11 @@ const App = () => {
             path="staff/:salonId/:serviceName/:stylistId/slots"
             element={<StylistSlotPage />}
           />
-
-          {/* These were missing or misplaced */}
           <Route path="bookings" element={<MyBookings />} />
-          <Route path="hairstyletryon" element={<HairstyleTryOn />} />
           <Route path="bookslot" element={<BookSlot />} />
+          <Route path="hairstyletryon" element={<HairstyleTryOn />} />
+          {/* Add this line once you have the component ready */}
+          {/* <Route path="reviews" element={<ReviewsPage />} /> */}
         </Route>
 
         {/* SALON OWNER ROUTES */}
@@ -74,6 +80,9 @@ const App = () => {
           <Route path="schedule" element={<UpdateTimeslots />} />
           <Route path="myprofile" element={<MyProfile />} />
         </Route>
+
+        {/* CATCH-ALL ROUTE: Redirects any unknown URL back to Home */}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </div>
   );
